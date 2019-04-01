@@ -12,12 +12,18 @@ class UsersController extends Controller
     {
         //except 方法来设定 指定动作 不使用 Auth 中间件进行过滤，
         $this->middleware('auth', [            
-            'except' => ['create', 'store']
+            'except' => ['create', 'store','index']
         ]);
         //未登陆的用户只能访问 注册页面
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+    }
+    //用户列表
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
     //用户注册
     public function create()
